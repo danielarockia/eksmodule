@@ -1,0 +1,44 @@
+resource "helm_release" "istio-base" {
+  name       = "istio-base"
+  repository = "https://istio-release.storage.googleapis.com/charts"
+  chart      = "base"
+  namespace = "istio-system"
+  depends_on = [
+    kubernetes_namespace.eks_namespace
+  ]
+
+  values = [
+    file("D:\\AWS-TF\\tf-single-subnet\\infra-terraform-environments\\env\\dev\\dev\\ap-south-1\\eks\\eks_controlplane\\istiovalues\\base-values.yaml")
+  ]
+
+}
+
+resource "helm_release" "istiod" {
+  name       = "istiod"
+  repository = "https://istio-release.storage.googleapis.com/charts"
+  chart      = "istiod"
+  namespace = "istio-system"
+  depends_on = [
+    kubernetes_namespace.eks_namespace
+  ]
+
+  values = [
+    file("D:\\AWS-TF\\tf-single-subnet\\infra-terraform-environments\\env\\dev\\dev\\ap-south-1\\eks\\eks_controlplane\\istiovalues\\istiod-values.yaml")
+  ]
+
+}
+
+resource "helm_release" "istio-ingress" {
+  name       = "istio-ingress"
+  repository = "https://istio-release.storage.googleapis.com/charts"
+  chart      = "gateway"
+  namespace = "istio-ingress"
+  depends_on = [
+    kubernetes_namespace.eks_namespace
+  ]
+
+  values = [
+    file("D:\\AWS-TF\\tf-single-subnet\\infra-terraform-environments\\env\\dev\\dev\\ap-south-1\\eks\\eks_controlplane\\istiovalues\\istiogateway-values.yaml")
+  ]
+
+}
